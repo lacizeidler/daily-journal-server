@@ -110,7 +110,7 @@ def create_entry(new_entry):
             (concept, entry, mood_id)
         VALUES
             (?, ?, ?);
-        """, (new_entry['concept'], new_entry['entry'], new_entry['mood_id']))
+        """, (new_entry['concept'], new_entry['entry'], new_entry['moodId']))
 
         id = db_cursor.lastrowid
 
