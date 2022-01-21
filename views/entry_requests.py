@@ -23,7 +23,7 @@ def get_all_entries():
             a.mood_id,
             l.label mood_label
         FROM Entries a
-        JOIN Moods l
+        LEFT JOIN Moods l
             ON l.id = a.mood_id
         """)
 
@@ -74,7 +74,7 @@ def get_single_entry(id):
             a.mood_id,
             l.label mood_label
         FROM Entries a
-        JOIN Moods l
+        LEFT JOIN Moods l
             ON l.id = a.mood_id
         WHERE a.id = ? 
         """, (id, ))
@@ -120,7 +120,7 @@ def create_entry(new_entry):
 
 
 def update_entry(id, new_entry):
-    with sqlite3.connect("./journalentry.sqlite3") as conn:
+    with sqlite3.connect("./dailyjournal.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""

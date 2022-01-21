@@ -39,4 +39,6 @@ INSERT INTO `Tags` VALUES (null, "Javascript");
 INSERT INTO `EntryTag` VALUES (null, 2, 3);
 INSERT INTO `EntryTag` VALUES (null, 2, 3);
 INSERT INTO `EntryTag` VALUES (null, 2, 3);
-
+INSERT INTO `EntryTag` VALUES (null, 3, 1);
+INSERT INTO `EntryTag` VALUES (null, 4, 2);
+INSERT INTO `EntryTag` VALUES (null, 5, 3);

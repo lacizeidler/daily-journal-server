@@ -3,7 +3,9 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from views import get_all_entries, get_single_entry
 from views.entry_requests import create_entry, delete_entry, update_entry
+from views.entry_tag_requests import create_entry_tag, get_all_entry_tags, get_single_entry_tag
 from views.mood_requests import get_all_moods, get_single_mood
+from views.tag_requests import get_all_tags, get_single_tag
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
 # work together for a common purpose. In this case, that
@@ -89,6 +91,16 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_mood(id)}"
                 else:
                     response = f"{get_all_moods()}"
+            if resource == "tags":
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"
+            if resource == "entrytags":
+                if id is not None:
+                    response = f"{get_single_entry_tag(id)}"
+                else:
+                    response = f"{get_all_entry_tags()}"
 
         self.wfile.write(response.encode())
 
@@ -114,6 +126,17 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # Encode the new entry and send in response
         self.wfile.write(f"{new_entry}".encode())
+
+        new_entry_tag = None
+
+        # Add a new entry to the list. Don't worry about
+        # the orange squiggle, you'll define the create_entry
+        # function next.
+        if resource == "entrytags":
+            new_entry_tag = create_entry_tag(post_body)
+
+        # Encode the new entry and send in response
+        self.wfile.write(f"{new_entry_tag}".encode())
 
     def do_PUT(self):
         content_len = int(self.headers.get('content-length', 0))
