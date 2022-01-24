@@ -138,3 +138,42 @@ def update_entry(id, new_entry):
         return False
     else:
         return True
+
+
+def find_entry(search_entry):
+    with sqlite3.connect("dailyjournal.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT 
+            a.id,
+            a.concept,
+            a.entry,
+            a.mood_id,
+            l.label mood_label
+        FROM Entries a
+        LEFT JOIN Moods l
+            ON l.id = a.mood_id
+        WHERE a.entry LIKE ? 
+        """, (search_entry, ))
+
+        entries = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            entry = Entry(row['id'],
+                          row['concept'],
+                          row['entry'],
+                          row['mood_id'])
+
+            mood = Mood(row['id'], row['mood_label'])
+
+            entry.mood = mood.__dict__
+
+            entries.append(entry.__dict__)
+
+    # Use `json` package to properly serialize list as JSON
+    # json.dumps() function converts a Python object into a json string.
+    return json.dumps(entries)

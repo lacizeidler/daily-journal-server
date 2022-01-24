@@ -2,7 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from views import get_all_entries, get_single_entry
-from views.entry_requests import create_entry, delete_entry, update_entry
+from views.entry_requests import create_entry, delete_entry, find_entry, update_entry
 from views.entry_tag_requests import create_entry_tag, get_all_entry_tags, get_single_entry_tag
 from views.mood_requests import get_all_moods, get_single_mood
 from views.tag_requests import get_all_tags, get_single_tag
@@ -101,6 +101,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_entry_tag(id)}"
                 else:
                     response = f"{get_all_entry_tags()}"
+
+        elif len(parsed) == 3:
+            (resource, key, value) = parsed
+
+            if key == "entry" and resource == "entries":
+                response = find_entry(value)
 
         self.wfile.write(response.encode())
 
